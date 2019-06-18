@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>sample3</title>
+</head>
+<body>
+  sample3
+  <div id="shape1"></div>
+  <script src="http://d3js.org/d3.v5.min.js"></script>
+  <script>
+
+  d3.json("http://localhost:50503/api/locate").then(function(data){
+  //結果がデフォルトでdataの_itemsというキーに入る
+    onDataLoaded(data["_items"]);
+    //console.log(data);
+  });
+
+  function onDataLoaded(data) {
+    //console.log(JSON.stringify(data[0]["x1"], null, 2));
+    //drawMap(data);
+    //drawBarChart(data);
+    //drawLineChart(data);
+    drawFourDivided(data)
+
+  }
+
+  function drawFourDivided(data){
+    //data1=d3.keys(data);
+    //console.log(JSON.stringify(d3.keys(data),null,2));
+    var w = 1000;
+    var h = 1000;
+    var svg = d3.select("#shape1").append("svg")
+    .attr("width",w)
+    .attr("height",h);
+
+    svg.append("rect")
+    .attr("x",100)
+    .attr("y",100)
+    .attr("width",100)
+    .attr("height",100)
+    .attr("stroke","black")
+    .attr("stroke-width",1)
+    .attr("fill","white");
+
+
+    for(var i = 0; i < data.length; i++){
+      svg.append("rect")
+      .attr("x",function(d){return data[i]["x0"]+100})
+      .attr("y",function(d){return 100-data[i]["y1"]+100})
+      .attr("width",function(d){return data[i]["width"]})
+      .attr("height",function(d){return data[i]["height"]})
+      .attr("stroke","black")
+      .attr("stroke-width",0.5)
+      .attr("fill","white")
+    }
+    for(var i = 0; i < data.length; i++){
+      //tweets = function(d){return data[i]["tweets"]}
+      if(data[i]["tweets"].length > 0){
+        svg.append("circle")
+        .attr('cx',function(d){return data[i]["tweets"][0]["lon"]+100})
+        .attr('cy',function(d){return 100-data[i]["tweets"][0]["lat"]+100})
+        .attr("r",0.5);
+      }
+    }
+    //console.log(JSON.stringify(data[3]["tweets"][0]["lon"],null,2));
+  }
+
+
+  </script>
+<!--
+  <script>
+    var w = 160;
+    var h = 50;
+    var svg = d3.select("#shape1").append("svg")
+    .attr("width", w)
+    .attr("height", h);
+    /* #中の五つを書いてる
+    for (var i = 0; i < 5; i++) {
+      svg.append("rect").attr("id", "rec" + i).attr("x", i * 30 + 10).attr("class", "rec");
+    }*/
+  </script>
+  -->
+  <!--
+  <style>
+    svg {
+      border: solid 1px #CCC;
+    }
+    rect {
+      width: 30px;
+      height: 50px;
+      stroke: #999;
+      stroke-width: 2px;
+    }
+    .rec {
+      y: 10;
+      fill: #F00;
+  }
+  </style>
+  -->
+  <!--
+  <script>
+    var width = 960, height = 700;
+    var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+    svg.append("rect")
+    .attr("x",100)
+    .attr("y",70)
+    .attr("width",50)
+    .attr("height",30)
+    .attr("stroke","black")
+    .attr("stroke-width",0.5)
+    .attr("fill","white")
+  </script>
+-->
+</body>
+</html>
+
+<!--
+<script>
+  d3.json("http://localhost:50503/api/locate").then(function(data){
+    onDataLoaded(data["_items"]);
+    console.log(data);
+  });
+
+  function onDataLoaded(data) {
+    console.log(JSON.stringify(data, null, 2));
+    //drawMap(data);
+    //drawBarChart(data);
+    //drawLineChart(data);
+  }
+</script>
+-->
